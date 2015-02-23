@@ -8,7 +8,7 @@ A fake and incomplete! SIP stack I use in some security projects. It implements 
 
 
 ## Install
-- It's not in the NPM repo since it's nor ready to use in production. BTW you can install it from there:
+- It's not in the NPM repo since it's not ready to use in production. BTW you can install it from there:
 `npm i -g git+https://github.com/jesusprubio/sip-fake-stack.git`
 
 ## Use
