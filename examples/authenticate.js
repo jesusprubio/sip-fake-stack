@@ -19,7 +19,7 @@
 
 'use strict';
 
-//var sipStack = require('sip-fake-stack'),
+//var SipStack = require('sip-fake-stack'),
 var SipStack = require('../'),
     stackCfg, msgCfg, fakeStack;
 
