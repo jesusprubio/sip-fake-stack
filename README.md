@@ -1,6 +1,6 @@
 # assaultjs-geolocation
-A fake (and incomplete!) SIP stack I use in some security projects. It implements (more ore less ;) valid SIP packet following [RFC 3261](http://www.ietf.org/rfc/rfc3261.txt) and its extensions. Some features:
-- RFC compliant to avoid blocking ([RFC 3261](https://www.ietf.org/rfc/rfc3261.txt)
+A fake (and incomplete!) SIP stack I use in some security projects. Some features:
+- More less ;) valid SIP packet to avoid blocking following [RFC 3261](http://www.ietf.org/rfc/rfc3261.txt) and its extensions
 - TLS, IPv6
 - SIP over WS(S) support ([RFC 7118](https://tools.ietf.org/html/rfc7118))
 - Partial [SIP Torture](https://tools.ietf.org/html/rfc4475)
