@@ -1,4 +1,4 @@
-# assaultjs-geolocation
+# sip-fake-stack
 A fake (and incomplete!) SIP stack I use in some security projects. Some features:
 - More less ;) valid SIP packet to avoid blocking following [RFC 3261](http://www.ietf.org/rfc/rfc3261.txt) and its extensions
 - TLS, IPv6
