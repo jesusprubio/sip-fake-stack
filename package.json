@@ -18,7 +18,12 @@
     "Pentesting",
     "Exploiting",
     "VoIP",
-    "SIP"
+    "SIP",
+    "socket",
+    "UDP",
+    "TCP",
+    "TLS",
+    "Websocket"
   ],
   "homepage": "https://github.com/jesusprubio/sip-fake-stack.js",
   "bugs": {

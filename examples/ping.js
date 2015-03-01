@@ -38,18 +38,20 @@ stackCfg = {
 fakeStack = new SipStack(stackCfg);
 
 msgCfg = {
-    meth: 'REGISTER'
-//	print: true
+    meth: 'OPTIONS',
+	print: true
 };
 fakeStack.send(msgCfg, function (err, res) {
     if (err) {
         console.log('Error:');
         console.log(err);
+
+        process.exit(1);
     } else {
         console.log('Result:');
         // All responses are returned in an array
         console.log(res);
-    }
 
-    process.exit(0);
+        process.exit(0);
+    }
 });

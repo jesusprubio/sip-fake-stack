@@ -17,7 +17,7 @@
 
 // Different transports wrapper to allow to open a connection over
 // UDP, TCP, TLS, WS or WSS in a transparent way.
-// TODO: For now it only works as a client!
+// TODO: For now it only works as a client able to send (and receive) stuff!
 
 'use strict';
 
@@ -90,10 +90,13 @@ util.inherits(SteroidsSocket, EventEmitter);
 
 SteroidsSocket.prototype.send = function (msg) {
     var self = this,
+        // This var is to control of our timeout error
         received = false,
         wsError = false,
         protocols;
 
+    // The libraries don't support any close function, so we need this
+    // to emulate it. 
     function timeoutCb() {
         if (!received) {
             self.emit('error', {
@@ -139,8 +142,8 @@ SteroidsSocket.prototype.send = function (msg) {
                 });
             });
 
-            // We need a server in UDP to implement sipBruteExtAst module
-            self.megaSocket.bind(self.lport, function () { // "connect" listener
+            // "connect" listener
+            self.megaSocket.bind(self.lport, function () {
                 var buff = new Buffer(msg);
 
                 setTimeout(timeoutCb, self.timeout);
@@ -153,7 +156,6 @@ SteroidsSocket.prototype.send = function (msg) {
                 );
             });
         },
-        // Only client support from here
         'TCP': function (isSecure) {
             function listenCb() {
                 self.megaSocket.write(msg);
@@ -276,7 +278,7 @@ SteroidsSocket.prototype.send = function (msg) {
     if (!this.target) {
         self.emit('error', {
             type: 'params',
-            data: 'You need at least to specify a valid IPv4/6 target'
+            data: 'You need to specify a valid IPv4/6 target'
         });
 
         return;

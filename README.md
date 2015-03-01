@@ -12,7 +12,7 @@ A fake (and incomplete!) SIP stack I use in some security projects. Some feature
 `npm i -g git+https://github.com/jesusprubio/sip-fake-stack.git`
 
 ## Use
-Visit the code in the ["examples"](examples) folder.
+- [Examples](examples)
 
 ## Issues
 - Please use GitHub web (https://github.com/assaultjs/assaultjs-geolocation/issues). If you have doubts playing with the software label the issue as "question".

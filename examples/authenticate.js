@@ -41,16 +41,19 @@ msgCfg = {
     meth: 'REGISTER',
     fromExt: 100,
     pass: 100,
+//    pass: 433243,
     print: true
 };
 fakeStack.authenticate(msgCfg, function (err, res) {
     if (err) {
         console.log('Error:');
         console.log(err);
+
+        process.exit(1);
     } else {
         console.log('Result:');
         console.log(res);
-    }
 
-    process.exit(0);
+        process.exit(0);
+    }
 });
