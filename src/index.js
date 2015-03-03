@@ -279,4 +279,4 @@ module.exports = SipFakeStack;
 // We expose also the rest of the stuff just in case
 module.exports.parser = sipParser;
 module.exports.utils = utils;
-module.exports.steroidSocket = SteroidsSocket;
+module.exports.SteroidsSocket = SteroidsSocket;
