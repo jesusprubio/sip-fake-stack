@@ -29,7 +29,7 @@ stackCfg = {
     port: '5060',
     transport: 'UDP', // UDP, TCP, TLS, WS, WSS
     timeout: 3000
-//    wsPath: '/ws', // only when WS(S)
+//    wsPath: 'ws', // only when WS(S)
 //    tlsType: 'TLSv1', // only when TLS
 //    srcHost: 192.168.1.9
 //    lport: 5000,
