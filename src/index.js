@@ -43,7 +43,6 @@ function SipFakeStack(config) {
     this.srcHost = config.srcHost;
     this.timeout = config.timeout || 8000;
     this.wsPath = config.wsPath || null;
-    this.tlsType = config.tlsType || 'SSLv3';
     this.domain = config.domain || null;
     this.onlyFirst = config.onlyFirst || true;
 
@@ -68,8 +67,7 @@ SipFakeStack.prototype.send = function (cfg, callback) {
                 lport: self.lport,
                 timeout: self.timeout,
                 wsProto: 'sip',
-                wsPath: self.wsPath,
-                tlsType: self.tlsType
+                wsPath: self.wsPath
             },
             msgOptions = cfg,
             allRes = [],
@@ -152,8 +150,7 @@ SipFakeStack.prototype.authenticate = function (config, callback) {
                 lport: self.lport,
                 timeout: self.timeout,
                 wsProto: 'sip',
-                wsPath: self.wsPath,
-                tlsType: self.tlsType
+                wsPath: self.wsPath
             };
 
         // Reusing options object

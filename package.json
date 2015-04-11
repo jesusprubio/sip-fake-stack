@@ -1,7 +1,7 @@
 {
   "name": "sip-fake-stack",
-  "version": "0.0.0",
-  "description": "A fake and incomplete! SIP stack I use in some security projects.",
+  "version": "0.0.1",
+  "description": "A fake and incomplete! SIP stack I use in different security projects.",
   "author": "Jesus Perez <@jesusprubio> (http://jesusprubio.name)",
   "contributors": [
     "https://github.com/jesusprubio/sip-fake-stack/graphs/contributors"

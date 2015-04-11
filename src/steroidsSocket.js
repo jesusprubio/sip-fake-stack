@@ -76,7 +76,6 @@ function SteroidsSocket(options) {
     this.lport = options.lport || null;
     this.timeout = options.timeout || 8000;
     this.allowHalfOpen = options.allowHalfOpen || null;
-    this.tlsType = options.tlsType || 'SSLv3';
     this.wsProto = options.wsProto || 'sip';
     this.wsPath = options.wsPath || null;
 
@@ -184,9 +183,7 @@ SteroidsSocket.prototype.send = function (msg) {
                     {
                         host: self.target,
                         port: self.port,
-                        rejectUnauthorized: false,
-                        // 'TLSv1', 'SSLv2', 'SSLv3'
-                        secureProtocol: self.tlsType + '_method'
+                        rejectUnauthorized: false
                     },
                     listenCb // 'connect listener'
                 );
