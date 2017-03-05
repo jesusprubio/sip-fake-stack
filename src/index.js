@@ -1,18 +1,8 @@
 /*
-    Copyright Jesus Perez <jesusprubio gmail com>
+  Copyright Jesús Pérez <jesusprubio@gmail.com>
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  This code may only be used under the MIT license found at
+  https://opensource.org/licenses/MIT.
 */
 
 'use strict';
@@ -63,7 +53,7 @@ SipFakeStack.prototype.send = function (cfg, callback) {
         var socketCfg = {
                 target: self.server,
                 port: self.port,
-                transport: self.transport,
+                transport: self.transport.toUpperCase(),
                 lport: self.lport,
                 timeout: self.timeout,
                 wsProto: 'sip',
@@ -78,21 +68,21 @@ SipFakeStack.prototype.send = function (cfg, callback) {
         msgOptions.server = self.server;
         msgOptions.srcHost = self.srcHost;
         msgOptions.domain = self.domain;
-        msgOptions.transport = self.transport;
+        msgOptions.transport = self.transport.toUpperCase();
 
-        self.megaSocket = new SteroidsSocket(socketCfg);
+        self.metaSocket = new SteroidsSocket(socketCfg);
 
-        self.megaSocket.on('error', function (err) {
+        self.metaSocket.on('error', function (err) {
             callback({
                 message: 'Generic socket error',
                 error: err
             });
         });
 
-        self.megaSocket.on('message', function (msg) {
+        self.metaSocket.on('message', function (msg) {
 
             if (!self.onlyFirst) {
-                self.megaSocket.close();
+                self.metaSocket.close();
                 callback(null, {
                     msg : msg
                 });
@@ -103,7 +93,7 @@ SipFakeStack.prototype.send = function (cfg, callback) {
                 returned = true;
                 // We wait for a while for more responses
                 setTimeout(function () {
-                    self.megaSocket.close();
+                    self.metaSocket.close();
                     callback(null, {
                         message : 'Received responses:',
                         data: allRes
@@ -115,7 +105,7 @@ SipFakeStack.prototype.send = function (cfg, callback) {
             allRes.push(msg.data.toString());
         });
 
-        self.megaSocket.send(utils.createMessage(msgOptions));
+        self.metaSocket.send(utils.createMessage(msgOptions));
     }
 
     // Trick needed to avoid problem with bussy ports in UDP (EADDINUSE)
@@ -146,7 +136,7 @@ SipFakeStack.prototype.authenticate = function (config, callback) {
             socketCfg = {
                 target: self.server,
                 port: self.port,
-                transport: self.transport,
+                transport: self.transport.toUpperCase(),
                 lport: self.lport,
                 timeout: self.timeout,
                 wsProto: 'sip',
@@ -162,23 +152,26 @@ SipFakeStack.prototype.authenticate = function (config, callback) {
         msgOptions.callId = callId;
         msgOptions.toExt = toExt;
         msgOptions.gruuInstance = gruuInstance;
+        msgOptions.transport = self.transport.toUpperCase();
 
-        self.megaSocket = new SteroidsSocket(socketCfg);
+        self.metaSocket = new SteroidsSocket(socketCfg);
 
-        self.megaSocket.on('error', function (err) {
+        self.metaSocket.on('error', function (err) {
+            console.log('ERR');
+            console.log(err);
             callback({
                 message: 'Generic socket error, second time: ' + !firstTime,
                 error: err
             });
         });
 
-        self.megaSocket.on('message', function (msg) {
+        self.metaSocket.on('message', function (msg) {
             var lastMessage = 'Not accepted',
                 response, resCode, parsedAuth;
 
             // TODO: We need to be more polite at the end of this function
             // (send ACKs, etc.) to avoid retryings
-            self.megaSocket.close();
+            self.metaSocket.close();
 
             if (!(msg && msg.data)) {
                 callback({
@@ -203,7 +196,7 @@ SipFakeStack.prototype.authenticate = function (config, callback) {
                         }
                     });
 
-                    self.megaSocket.close(); // just in case
+                    self.metaSocket.close(); // just in case
 
                     return;
                 } else if (resCode === '200') {
@@ -214,7 +207,7 @@ SipFakeStack.prototype.authenticate = function (config, callback) {
                             response: response
                         }
                     });
-                    self.megaSocket.close();
+                    self.metaSocket.close();
 
                     return;
                 }
@@ -237,7 +230,7 @@ SipFakeStack.prototype.authenticate = function (config, callback) {
                 msgOptions.pass = config.pass;
                 msgOptions.cseq = cseq + 1;
 
-                self.megaSocket.send(utils.createMessage(msgOptions));
+                self.metaSocket.send(utils.createMessage(msgOptions));
             } else { // second time
                 if (['REGISTER', 'PUBLISH'].indexOf(config.meth) !== -1) {
                     if (resCode === '200') {
@@ -258,17 +251,18 @@ SipFakeStack.prototype.authenticate = function (config, callback) {
             }
         });
 
-        self.megaSocket.send(utils.createMessage(msgOptions));
+        self.metaSocket.send(utils.createMessage(msgOptions));
     }
 
-    if (!this.lport) {
-        randomPort(function (port) {
-            self.lport = port;
-            authenticateLport();
-        });
-    } else {
-        authenticateLport();
-    }
+    // TODO: Error: address in use if a huge actives.
+    // if (!this.lport) {
+    //     randomPort(function (port) {
+    //         self.lport = port;
+    //         authenticateLport();
+    //     });
+    // } else {
+    authenticateLport();
+    // }
 
 };
 

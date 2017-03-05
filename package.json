@@ -1,6 +1,6 @@
 {
   "name": "sip-fake-stack",
-  "version": "0.0.1",
+  "version": "1.0.0-beta.0",
   "description": "A fake and incomplete! SIP stack I use in different security projects.",
   "author": "Jesus Perez <@jesusprubio> (http://jesusprubio.name)",
   "contributors": [
@@ -29,7 +29,7 @@
   "bugs": {
     "url": "https://github.com/jesusprubio/sip-fake-stack/issues"
   },
-  "license": "GPLv3",
+  "license": "MIT",
   "scripts": {},
   "dependencies": {
     "lodash": "^3.3.0",

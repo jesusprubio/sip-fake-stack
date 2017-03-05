@@ -1,18 +1,8 @@
 /*
-    Copyright Jesus Perez <jesusprubio gmail com>
+  Copyright Jesús Pérez <jesusprubio@gmail.com>
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  This code may only be used under the MIT license found at
+  https://opensource.org/licenses/MIT.
 */
 
 // Different transports wrapper to allow to open a connection over
@@ -115,12 +105,12 @@ SteroidsSocket.prototype.send = function (msg) {
     protocols = {
         'UDP': function () {
             if (net.isIPv6(self.target)) {
-                self.megaSocket = dgram.createSocket('udp6');
+                self.metaSocket = dgram.createSocket('udp6');
             } else {
-                self.megaSocket = dgram.createSocket('udp4');
+                self.metaSocket = dgram.createSocket('udp4');
             }
 
-            self.megaSocket.on('error', function (err) {
+            self.metaSocket.on('error', function (err) {
                 received = true; // to avoid the launch of our timeout error
                 self.emit('error', {
                     type: 'socket',
@@ -128,11 +118,11 @@ SteroidsSocket.prototype.send = function (msg) {
                 });
             });
 
-            self.megaSocket.on('closed', function () {
+            self.metaSocket.on('closed', function () {
                 self.emit('closed');
             });
 
-            self.megaSocket.on('message', function (msg, rinfo) {
+            self.metaSocket.on('message', function (msg, rinfo) {
                 received = true;
                 self.emit('message', {
                     type: 'received',
@@ -142,11 +132,11 @@ SteroidsSocket.prototype.send = function (msg) {
             });
 
             // "connect" listener
-            self.megaSocket.bind(self.lport, function () {
+            self.metaSocket.bind(self.lport, function () {
                 var buff = new Buffer(msg);
 
                 setTimeout(timeoutCb, self.timeout);
-                self.megaSocket.send(
+                self.metaSocket.send(
                     buff,
                     0,
                     buff.length,
@@ -157,7 +147,7 @@ SteroidsSocket.prototype.send = function (msg) {
         },
         'TCP': function (isSecure) {
             function listenCb() {
-                self.megaSocket.write(msg);
+                self.metaSocket.write(msg);
                 // TODO: Another timeout and event (no response)
                 // should be also generated
             }
@@ -165,7 +155,7 @@ SteroidsSocket.prototype.send = function (msg) {
             setTimeout(timeoutCb, self.timeout);
 
             if (!isSecure) {
-                self.megaSocket = net.connect(
+                self.metaSocket = net.connect(
                     {
                         host: self.target,
                         port: self.port,
@@ -178,7 +168,7 @@ SteroidsSocket.prototype.send = function (msg) {
                     listenCb // 'connect listener'
                 );
             } else {
-                self.megaSocket = tls.connect(
+                self.metaSocket = tls.connect(
     // http://nodejs.org/api/tls.html#tls_tls_connect_port_host_options_callback
                     {
                         host: self.target,
@@ -188,7 +178,7 @@ SteroidsSocket.prototype.send = function (msg) {
                     listenCb // 'connect listener'
                 );
             }
-            self.megaSocket.on('error', function (err) {
+            self.metaSocket.on('error', function (err) {
                 received = true; // to avoid the launch of our timeout error
                 self.emit('error', {
                     type: 'socket',
@@ -196,13 +186,13 @@ SteroidsSocket.prototype.send = function (msg) {
                 });
             });
 
-            self.megaSocket.on('end', function () {
+            self.metaSocket.on('end', function () {
                 self.emit({
                     type: 'socket closed'
                 });
             });
 
-            self.megaSocket.on('data', function (data) {
+            self.metaSocket.on('data', function (data) {
                 received = true;
                 self.emit('message', {
                     type: 'received',
@@ -220,7 +210,7 @@ SteroidsSocket.prototype.send = function (msg) {
             if (self.wsPath) {
                 addr += '/' + self.wsPath;
             }
-            self.megaSocket = new WebSocketClient({
+            self.metaSocket = new WebSocketClient({
                 tlsOptions: {
                     rejectUnauthorized : false
                 }
@@ -228,7 +218,7 @@ SteroidsSocket.prototype.send = function (msg) {
 
             setTimeout(timeoutCb, self.timeout);
 
-            self.megaSocket.on('connectFailed', function (err) {
+            self.metaSocket.on('connectFailed', function (err) {
                 received = true; // to avoid the launch of our timeout error
                 if (!wsError) {
                     self.emit('error', {
@@ -238,7 +228,7 @@ SteroidsSocket.prototype.send = function (msg) {
                 }
             });
 
-            self.megaSocket.on('connect', function (connection) {
+            self.metaSocket.on('connect', function (connection) {
                 connection.on('error', function (err) {
                     // To avoid returning multiple errors, see the comments
                     // in "callback" function
@@ -265,7 +255,7 @@ SteroidsSocket.prototype.send = function (msg) {
                 connection.sendUTF(msg);
             });
 
-            self.megaSocket.connect(addr, 'sip');
+            self.metaSocket.connect(addr, 'sip');
         },
         'WSS': function () {
             protocols.WS();
@@ -293,9 +283,9 @@ SteroidsSocket.prototype.send = function (msg) {
 SteroidsSocket.prototype.close = function () {
     try {
         if (this.transport === 'TCP' || this.transport === 'TLS') {
-            this.megaSocket.destroy();
+            this.metaSocket.destroy();
         } else if (this.transport === 'UDP') {
-            this.megaSocket.close();
+            this.metaSocket.close();
         }
     } catch (err) {} // do nothing, only to avoid crashing
 };
