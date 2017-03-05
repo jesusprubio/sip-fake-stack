@@ -1,6 +1,6 @@
 {
   "name": "sip-fake-stack",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0",
   "description": "A fake and incomplete! SIP stack I use in different security projects.",
   "author": "Jesus Perez <@jesusprubio> (http://jesusprubio.name)",
   "contributors": [
@@ -34,7 +34,7 @@
     "dep-ok": "depcheck --ignores=release-it",
     "dep-sec": "nsp check",
     "dep-old": "ncu",
-    "release": "npm run cont-int && release-it"
+    "release": "release-it"
   },
   "dependencies": {
     "lodash": "^3.3.0",
